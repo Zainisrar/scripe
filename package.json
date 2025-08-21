@@ -1,12 +1,16 @@
 {
-  "name": "my-app",
+  "name": "stripe-app",
   "version": "1.0.0",
+  "description": "Stripe connected accounts app",
   "main": "updated.js",
   "type": "module",
   "scripts": {
     "start": "node updated.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "dotenv": "^16.4.5",
+    "stripe": "^14.0.0",
+    "uuid": "^9.0.1"
   }
 }
