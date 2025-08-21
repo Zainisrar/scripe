@@ -10,28 +10,30 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const app = express();
 app.use(express.json());
 
-// Helpers
+// ------------------- Test Endpoint -------------------
+app.get("/hello", (req, res) => {
+  res.json({ message: "Hello! The server is running 🚀" });
+});
+
+// ------------------- Helpers -------------------
 function loadUsers() {
   return JSON.parse(fs.readFileSync("userss.json", "utf8"));
 }
 function saveUsers(data) {
-  fs.writeFileSync("userss.json", JSON.stringify(data, null, 2)); // fixed typo
+  fs.writeFileSync("userss.json", JSON.stringify(data, null, 2));
 }
 
-/**
- * 1️⃣ Create Connected Account
- */
+// ------------------- 1️⃣ Create Connected Account -------------------
 app.post("/create-connected-account", async (req, res) => {
   const { user_id, email } = req.body;
   try {
     const users = loadUsers();
-    const user = users.find(u => String(u.id) === String(user_id)); // safer match
+    const user = users.find(u => String(u.id) === String(user_id));
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Create connected account
     const account = await stripe.accounts.create({
       type: "express",
       country: "US",
@@ -41,7 +43,6 @@ app.post("/create-connected-account", async (req, res) => {
       },
     });
 
-    // Save connected account ID
     user.connected_account_id = account.id;
     saveUsers(users);
 
@@ -54,9 +55,7 @@ app.post("/create-connected-account", async (req, res) => {
   }
 });
 
-/**
- * 2️⃣ Generate Onboarding Link
- */
+// ------------------- 2️⃣ Generate Onboarding Link -------------------
 app.post("/onboarding-link", async (req, res) => {
   const { user_id } = req.body;
   try {
@@ -80,8 +79,6 @@ app.post("/onboarding-link", async (req, res) => {
   }
 });
 
-// 🚀 Start server
+// ------------------- Start Server -------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-// ✅ Export Express app as Firebase Function
-// export const api = onRequest(app);
