@@ -101,15 +101,15 @@ app.get("/hello", (req, res) => {
 });
 
 // ------------------- 1️⃣ Create Connected Account -------------------
-app.post("/create-connected-account", async (req, res) => {
-  const { user_id } = req.body;
+app.post("/create-connected", async (req, res) => {
+  const { user_Id } = req.body;
 
-  if (!user_id) {
+  if (!user_Id) {
     return res.status(400).json({ error: "user_id is required" });
   }
 
   try {
-    const userRef = doc(db, "users", user_id);
+    const userRef = doc(db, "users", user_Id);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
@@ -139,14 +139,14 @@ app.post("/create-connected-account", async (req, res) => {
 
 // ------------------- 2️⃣ Generate Onboarding Link -------------------
 app.post("/onboarding-link", async (req, res) => {
-  const { user_id } = req.body;
+  const { user_Id } = req.body;
 
-  if (!user_id) {
+  if (!user_Id) {
     return res.status(400).json({ error: "user_id is required" });
   }
 
   try {
-    const userRef = doc(db, "users", user_id);
+    const userRef = doc(db, "users", user_Id);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists() || !userSnap.data().connected_account_id) {
