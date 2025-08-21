@@ -81,7 +81,7 @@ app.post("/onboarding-link", async (req, res) => {
 });
 
 // 🚀 Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // ✅ Export Express app as Firebase Function
-export const api = onRequest(app);
+// export const api = onRequest(app);
